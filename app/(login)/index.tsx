@@ -1,11 +1,11 @@
 // LoginPage.js
 import React, { useState ,useCallback} from 'react';
 import { useRouter } from "expo-router";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert,Image } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { API_URL } from '@/env';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { GlobalAccess } from '../../components/location/GlobalAccess';
 const IndexPage = () => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -17,11 +17,13 @@ useFocusEffect(
       const user = await AsyncStorage.getItem("user");
       if (user) {
         console.log("User already logged in:", JSON.parse(user));
-       // router.push("/(tab)/home)");
-      }
-      console.log("User already logged in:");
-      router.push("../../(home)/search");
-      
+
+        GlobalAccess.UserName=JSON.parse(user).Name;
+        GlobalAccess.Phone=JSON.parse(user).Phone;
+        GlobalAccess.UserId=JSON.parse(user)._id;
+
+        router.push("../../(home)/");
+      }     
     };
 
     checkLoginStatus();
@@ -29,6 +31,7 @@ useFocusEffect(
 );
   const handleUserLogin = async () => {
       try {  
+        if (name!='' && phone!=''){
         const response = await fetch(API_URL+"login", {
           method: "POST",
           headers: {
@@ -50,7 +53,16 @@ useFocusEffect(
         // Save user data to cookies
         await AsyncStorage.setItem("user", JSON.stringify(data));
         Alert.alert("Login Successful", "Your OTP has been sent.");
-        router.navigate("/(tab)/(home)/");
+
+        GlobalAccess.UserName=data.Name;
+        GlobalAccess.Phone=data.Phone;
+        GlobalAccess.UserId=data._id;
+        
+        router.push("../../(home)/");
+      }
+      else{
+        alert("Please enter valid details!");
+      }
       } catch (error) {
         console.error("Login Error:", error);
         Alert.alert("Login Failed", "An error occurred during login. Please try again.");
@@ -59,7 +71,11 @@ useFocusEffect(
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+      <Text style={styles.title}>WELCOME TO DMART GROCERY 😊</Text>
+       <Image
+           source={require("@/assets/images/login.png")}
+           style={styles.loginImage}/>
+      
 
       <TextInput
         placeholder="Name"
@@ -94,17 +110,20 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 10,
+    textAlign:'center',
+    color:'#018786'
   },
   input: {
     width: '100%',
-    borderWidth: 1,
-    borderColor: '#ccc',
+    borderWidth: 2,
+    borderColor: '#018786',
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
+    color:'#018786'
   },
   button: {
     backgroundColor: '#018786',
@@ -117,4 +136,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
   },
+  loginImage:{
+    height:200,
+    width:200,
+  }
 });

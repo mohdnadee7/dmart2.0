@@ -3,17 +3,29 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView ,Modal, Tex
 import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import TopHeader from '@/components/TopHeader';
 import { GlobalAccess } from '@/components/location/GlobalAccess';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRouter } from "expo-router";
 
 const Profile = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
   const [postalCode, setPostalCode] = useState('');
-
+  const router = useRouter();
   const handleSaveAddress = () => {
     // Logic to save the new address
     console.log('New address saved:', { address, phone, postalCode });
     setModalVisible(false);
+  };
+
+  const logoutUser = async () => {
+    try {
+      await AsyncStorage.removeItem("user");
+      console.log("User removed successfully");
+      router.push("/(login)/");
+    } catch (error) {
+      console.error("Error removing user:", error);
+    }
   };
 
   return (
@@ -24,11 +36,11 @@ const Profile = () => {
       <View style={styles.profileHeader}>
         <Image
           style={styles.avatar}
-          source={require("@/assets/images/nadeem.jpg")} // Sample avatar
+          source={require("@/assets/images/avatar.png")} // Sample avatar
         />
-        <Text style={styles.name}>Nadeem Ansari</Text>
-        <Text style={styles.email}>mohammadnadeem9825@gmail.com</Text>
-        <Text style={styles.phone}>+91 8924957027</Text>
+        <Text style={styles.name}>{GlobalAccess.UserName}</Text>
+        {/* <Text style={styles.email}>mohammadnadeem9825@gmail.com</Text> */}
+        <Text style={styles.phone}>+91 {GlobalAccess.Phone}</Text>
       </View>
       
       {/* Address Section */}
@@ -60,7 +72,7 @@ const Profile = () => {
           <Text style={styles.actionButtonText}>Settings</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.actionButton, styles.logoutButton]}>
+        <TouchableOpacity style={[styles.actionButton, styles.logoutButton]} onPress={() => logoutUser()}>
           <MaterialIcons name="logout" size={24} color="#fff" />
           <Text style={styles.actionButtonText}>Log Out</Text>
         </TouchableOpacity>
@@ -125,8 +137,8 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
   avatar: {
-    width: 120,
-    height: 120,
+    width: 100,
+    height: 100,
     borderRadius: 60,
     borderWidth: 2,
     borderColor: '#018786',
