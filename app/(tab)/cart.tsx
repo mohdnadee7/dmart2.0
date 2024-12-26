@@ -17,12 +17,7 @@ const CartScreen = () => {
     useCallback(() => {
       const fetchCartData = async () => {
         try {
-          const response = await fetch(`${API_URL}getItemInCart?UserId=${GlobalAccess.UserId}`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
+          const response = await fetch(`${API_URL}getItemInCart?UserId=${GlobalAccess.UserId}`);
           if (!response.ok) {
             throw new Error(`Network response was not ok: ${response.statusText}`);
           }
@@ -45,12 +40,12 @@ const CartScreen = () => {
   }, [data]);
 
   const incrementQuantity = () => {
-    setQuantity(quantity + 1);
+    //setQuantity(quantity + 1);
   };
 
   const decrementQuantity = () => {
     if (quantity > 1) {
-      setQuantity(quantity - 1);
+      //setQuantity(quantity - 1);
     }
   };
 
@@ -58,20 +53,12 @@ const CartScreen = () => {
     console.log('Product deleted');
     // Add your delete logic here
     try {
-      const response = await fetch(API_URL + "removeItemInCart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: id,
-        }),
-      });
+      const response = await fetch(API_URL + "removeItemInCart?id="+id)
       if (!response.ok) {
         throw new Error(`Network response was not ok: ${response.statusText}`);
       }
       const result = await response.json();
-      setData(result);
+      //setData(result);
     } catch (err) {
       console.log("error", err);
     }
@@ -101,7 +88,7 @@ const CartScreen = () => {
                 />
                 <View style={styles.detailsContainer}>
                   <Text style={styles.name}>{item.Name}</Text>
-                  <Text style={styles.price}>{item.Price}</Text>
+                  <Text style={styles.price}>₹{item.Price} - {item.Quantity}</Text>
                   <View style={styles.quantityContainer}>
                     <TouchableOpacity onPress={decrementQuantity} style={styles.btn}>
                       <Text style={styles.btnText}>-</Text>

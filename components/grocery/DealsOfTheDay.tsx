@@ -99,7 +99,7 @@ const DealsOfTheDay = () => {
                         <Text style={styles.productPrice}>₹{item.Price} {item.Quantity}</Text>
                         <Text style={styles.productMRP}>MRP ₹{item.MRP}</Text>
                         <View style={styles.buttonContainer}>
-                            <Link href={`/(tab)/(home)/details/${item.Id}`} style={styles.viewAllButton}>
+                            <Link href={`/(tab)/(home)/details/${item._id}`} style={styles.viewAllButton}>
                                 <Text style={styles.buttonText}>View All</Text>
                             </Link>
                         </View>
