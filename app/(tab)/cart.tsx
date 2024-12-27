@@ -50,15 +50,14 @@ const CartScreen = () => {
   };
 
   const deleteProduct = async (id: any) => {
-    console.log('Product deleted');
-    // Add your delete logic here
+   
     try {
       const response = await fetch(API_URL + "removeItemInCart?id="+id)
       if (!response.ok) {
         throw new Error(`Network response was not ok: ${response.statusText}`);
       }
       const result = await response.json();
-      //setData(result);
+      alert("product is deleted from cart!");
     } catch (err) {
       console.log("error", err);
     }
@@ -115,13 +114,13 @@ const CartScreen = () => {
               </View>
 
               {/* Proceed Button */}
-              <Link style={styles.proceedButton} href={'/payment'} >
+              <Link style={styles.proceedButton} href={`/payment?pay=${totalAmount}`} >
                 <Text style={styles.proceedButtonText}>Proceed to Order</Text>
               </Link>
             </View>
           </>
         ) : (
-          <h3 style={{ textAlign: "center" }}>Your cart is empty</h3>
+          <Text style={{ textAlign: "center" }}>Your cart is empty</Text>
         )}
 
       </ScrollView>

@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView,Linking,Alert } from 'react-native';
 import { MaterialIcons, FontAwesome5, Ionicons } from '@expo/vector-icons';
 import TopHeader from '@/components/TopHeader';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation,useRoute  } from '@react-navigation/native';
+
 const PaymentPage = () => {
   const [selectedOption, setSelectedOption] = useState(null);
-  const totalAmount = 2500.00;
+  const router = useRoute();
+  const  payAmount  = router.params.pay || {};
+  
   const navigation = useNavigation();
 
   const handleUPIPayment = (appScheme) => {
-    const upiLink = `${appScheme}pay?pa=example@upi&pn=YourShop&am=${totalAmount}&cu=INR&tn=Payment for Order`;
+    const upiLink = `${appScheme}pay?pa=0000000000@upi&pn=dmart&am=${payAmount}&cu=INR&tn=Payment for Order`;
     Linking.canOpenURL(upiLink)
       .then((supported) => {
         if (supported) {
@@ -46,7 +49,7 @@ const PaymentPage = () => {
         </TouchableOpacity>
         
         {/* Total Amount */}
-        <Text style={styles.totalText}>Total Amount: ₹{totalAmount.toFixed(2)}</Text>
+        <Text style={styles.totalText}>Total Amount: ₹{payAmount?`${payAmount}`: "Loading.."}</Text>
       </View>
 
       {/* Payment Options */}

@@ -48,11 +48,10 @@ useFocusEffect(
         }
   
         const data = await response.json();
-        console.log("API Response:", data);
   
         // Save user data to cookies
         await AsyncStorage.setItem("user", JSON.stringify(data));
-        Alert.alert("Login Successful", "Your OTP has been sent.");
+        Alert.alert("Login Successful");
 
         GlobalAccess.UserName=data.Name;
         GlobalAccess.Phone=data.Phone;

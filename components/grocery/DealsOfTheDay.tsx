@@ -18,9 +18,9 @@ const DealsOfTheDay = () => {
                     if (!response.ok) {
                         throw new Error(`Network response was not ok: ${response.statusText}`);
                     }
-                    const result = await response.json(); // Await the JSON parsing
-                    console.log("res", result);
-                    setData(result); // Set the fetched data
+                    const result = await response.json();
+
+                    setData(result);
                 } catch (err) {
                     console.log("error", err);
                     setError(err.message);
@@ -56,8 +56,6 @@ const DealsOfTheDay = () => {
             if (!response.ok) {
                 throw new Error(`Network response was not ok: ${response.statusText}`);
             }
-            const result = await response.json();
-            setData(result);
             alert("Item added in your cart!")
         } catch (err) {
             console.log("error", err);
@@ -72,7 +70,6 @@ const DealsOfTheDay = () => {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-
                 }}
             >
                 <Text style={{ color: "#000", fontWeight: 600 }}>
@@ -105,7 +102,8 @@ const DealsOfTheDay = () => {
                         </View>
                     </View>
                 ))}
-            </View></>
+            </View>
+        </>
     );
 }
 
@@ -127,7 +125,7 @@ const styles = StyleSheet.create({
         width: 110,
     },
     imageContainer: {
-        position: 'relative', // To contain the absolute positioned button
+        position: 'relative', 
     },
     productTitle: {
         fontSize: 14,
@@ -137,13 +135,13 @@ const styles = StyleSheet.create({
     },
     productPrice: {
         fontSize: 14,
-        color: '#4CAF50', // Green color for price
+        color: '#4CAF50',
         textAlign: 'center',
     },
     productMRP: {
         fontSize: 14,
         color: '#888',
-        textDecorationLine: 'line-through', // Strike-through for MRP
+        textDecorationLine: 'line-through',
         textAlign: 'center',
     },
     gridItemImg: {
