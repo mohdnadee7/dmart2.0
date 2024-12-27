@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "dmart",
-    "slug": "dmart",
+    "name": "DMART",
+    "slug": "DMART",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -13,14 +13,15 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/icon.jpg",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.tester820.DMART"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/icon.jpg"
     },
     "plugins": [
       "expo-router",
@@ -36,6 +37,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "c1763794-9a71-449f-81a9-ae13908a4f3f"
+      }
     }
   }
 }
