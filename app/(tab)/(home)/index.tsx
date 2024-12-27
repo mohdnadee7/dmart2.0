@@ -132,14 +132,14 @@ if (loading) {
           <View style={styles.container}>
           {data && data.map((item, index) => (
             
-            <View style={styles.gridItemOuter} key={index} onTouchEnd={() => ViewRelatedProduct(item.categoryId)} >
+            <View style={styles.gridItemOuter} key={index} onTouchEnd={() => ViewRelatedProduct(item.CategoryId)} >
               <View style={styles.gridItem}>
                 <Image
-                  source={{uri:`${item.imageUrl}`}}
+                  source={{uri:`${item.ImageUrl}`}}
                   style={styles.gridItemImg}
                 />
               </View>
-              <Text style={styles.itemTitle}>{item.subCategory}</Text>
+              <Text style={styles.itemTitle}>{item.SubCategory}</Text>
             </View>
           ))}
            

@@ -9,11 +9,61 @@ import {
 } from "react-native";
 import Swiper from "react-native-swiper";
 import TopHeader from "@/components/TopHeader";
-import { useState } from "react";
+import React, { useState, useCallback } from 'react';
 import CartHeader from "@/components/grocery/CartHeader";
+import { useFocusEffect } from '@react-navigation/native';
+import { API_URL } from '../../..//../env';
+import { useRoute } from '@react-navigation/native';
+import { GlobalAccess } from '@/components/location/GlobalAccess';
 
 export default function Details() {
   const [quantity, setQuantity] = useState(1);
+  const [data, setData] = useState(null);
+  const route = useRoute();
+  const id  = route.params.id;
+
+   useFocusEffect(
+      useCallback(() => {
+        const fetchCartData = async () => {
+          try {
+            const response = await fetch(`${API_URL}getProductById?id=${id}`);
+            if (!response.ok) {
+              throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+            const result = await response.json();
+            setData(result);
+          } catch (err) {
+            console.log("error", err);          
+          } 
+        };
+  
+        fetchCartData();
+      }, [])
+    );
+  
+    const addToCart = async (itemId: any) => {
+            try {
+                const response = await fetch(API_URL + "addItemInCart", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        ProductId: itemId,
+                        UserId: GlobalAccess.UserId
+                    }),
+                });
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
+                }
+                const result = await response.json();
+                setData(result);
+                alert("Item added in your cart!")
+            } catch (err) {
+                console.log("error", err);
+            }
+    
+        }
 
   const product = {
     name: 'Masala Spice Mix',
@@ -45,6 +95,8 @@ export default function Details() {
         <CartHeader/>
 
         <ScrollView>
+        {data ? (
+          <>
           <Swiper
             style={styles.wrapper}
             showsButtons={false}
@@ -54,7 +106,7 @@ export default function Details() {
           >
             <View style={styles.slide}>
               <Image
-                source={product.image1}
+               source={{ uri: `${data.ImageUrl}` }}
                 style={styles.image}
               />
             </View>
@@ -72,14 +124,15 @@ export default function Details() {
             </View>
           </Swiper>
           <View style={styles.detailsContainer}>
-            <Text style={styles.name}>{product.name}</Text>
-            <Text style={styles.description}>{product.description}</Text>
+            <Text style={styles.name}>{data.Name}</Text>
+            <Text style={styles.description}>{data.Description}</Text>
 
             {/* Price and Discount Info */}
             <View style={styles.priceContainer}>
-              <Text style={styles.price}>{product.price}</Text>
-              <Text style={styles.mrp}>MRP: {product.mrp}</Text>
-              <Text style={styles.discount}>{product.discountPercentage} OFF</Text>
+              <Text style={styles.price}>₹{data.Price}.00</Text>
+              <Text style={styles.mrp}>MRP: ₹{data.MRP}.00</Text>
+              <Text style={styles.discount}>{(((data.MRP - data.Price) / data.MRP) * 100).toFixed(2)}% OFF </Text>
+              <Text style={{color:"#018786"}}> ₹{(data.MRP - data.Price)}.00 Save</Text>
             </View>
 
             {/* Quantity Selector */}
@@ -94,10 +147,12 @@ export default function Details() {
             </View>
 
             {/* Add to Cart Button */}
-            <TouchableOpacity style={styles.addToCartButton}>
+            <TouchableOpacity style={styles.addToCartButton} onPress={() => addToCart(data._id)}>
               <Text style={styles.addToCartButtonText}>Add to Cart</Text>
             </TouchableOpacity>
           </View>
+          </>
+        ):( <Text>Your cart is empty</Text>)}
           {/* Related Products Section */}
           <View style={styles.relatedProductsContainer}>
             <Text style={styles.relatedProductsTitle}>Related Products</Text>

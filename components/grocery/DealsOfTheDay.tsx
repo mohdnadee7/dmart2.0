@@ -1,44 +1,69 @@
 import { Link } from "expo-router";
-import { View, Text, Image, StyleSheet, TouchableOpacity,ActivityIndicator } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
 import React, { useCallback, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import {API_URL} from '../../env';
+import { API_URL } from '../../env';
+import { GlobalAccess } from '@/components/location/GlobalAccess';
+
 const DealsOfTheDay = () => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-  
+
     useFocusEffect(
         useCallback(() => {
-          const fetchData = async () => {
-            try {
-              const response = await fetch(API_URL+'products');
-              if (!response.ok) {
-                throw new Error(`Network response was not ok: ${response.statusText}`);
-              }
-              const result = await response.json(); // Await the JSON parsing
-              console.log("res", result);
-              setData(result); // Set the fetched data
-            } catch (err) {
-                console.log("error", err);
-              setError(err.message);
-            } finally {
-              setLoading(false); 
-            }
-          };
-    
-          fetchData(); // Call the fetch function
+            const fetchData = async () => {
+                try {
+                    const response = await fetch(API_URL + 'products');
+                    if (!response.ok) {
+                        throw new Error(`Network response was not ok: ${response.statusText}`);
+                    }
+                    const result = await response.json(); // Await the JSON parsing
+                    console.log("res", result);
+                    setData(result); // Set the fetched data
+                } catch (err) {
+                    console.log("error", err);
+                    setError(err.message);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            fetchData(); // Call the fetch function
         }, []) // Empty dependency array for focus effect
-      );
+    );
 
     if (loading) {
         return <ActivityIndicator size="large" color="#0000ff" />;
-      }
-    
-      if (error) {
-        return <Text>Error: {error}</Text>;
-      }
+    }
 
+    if (error) {
+        return <Text>Error: {error}</Text>;
+    }
+
+    const addToCart = async (itemId: any) => {
+        try {
+            const response = await fetch(API_URL + "addItemInCart", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    ProductId: itemId,
+                    UserId: GlobalAccess.UserId
+                }),
+            });
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+            const result = await response.json();
+            setData(result);
+            alert("Item added in your cart!")
+        } catch (err) {
+            console.log("error", err);
+        }
+
+    }
     return (
         <>
             <View
@@ -54,32 +79,32 @@ const DealsOfTheDay = () => {
                     Deals of the day
                 </Text>
                 <Text style={{ color: "#fff", backgroundColor: "#0039a6", paddingHorizontal: 10, paddingVertical: 5, borderRadius: 5, fontWeight: 600 }}>
-                <Link href={`/details?description=${encodeURIComponent('Deals of the day')}`}>  View all </Link>
+                    <Link href={`/details?description=${encodeURIComponent('Deals of the day')}`}>  View all </Link>
                 </Text>
             </View>
 
             <View style={styles.container}>
-            {data && data.map((item, index) => (
-                <View style={styles.dealsOfTheDay} key={index}>
-                    <View style={styles.imageContainer}>
-                        <Image
-                            source={{uri:`${item.imageUrl}`}}
-                            style={styles.gridItemImg}
-                        />
-                        <TouchableOpacity style={styles.addToCartButton}>
-                            <Text style={styles.buttonText}>+</Text>
-                        </TouchableOpacity>
+                {data && data.map((item, index) => (
+                    <View style={styles.dealsOfTheDay} key={index}>
+                        <View style={styles.imageContainer}>
+                            <Image
+                                source={{ uri: `${item.ImageUrl}` }}
+                                style={styles.gridItemImg}
+                            />
+                            <TouchableOpacity style={styles.addToCartButton} onPress={() => addToCart(item._id)}>
+                                <Text style={styles.buttonText}>+</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <Text style={styles.productTitle}>{item.Name}</Text>
+                        <Text style={styles.productPrice}>₹{item.Price} {item.Quantity}</Text>
+                        <Text style={styles.productMRP}>MRP ₹{item.MRP}</Text>
+                        <View style={styles.buttonContainer}>
+                            <Link href={`/(tab)/(home)/details/${item._id}`} style={styles.viewAllButton}>
+                                <Text style={styles.buttonText}>View All</Text>
+                            </Link>
+                        </View>
                     </View>
-                    <Text style={styles.productTitle}>{item.name}</Text>
-                    <Text style={styles.productPrice}>₹{item.price} {item.quantity}</Text>
-                    <Text style={styles.productMRP}>MRP ₹{item.mrp}</Text>
-                    <View style={styles.buttonContainer}>
-                    <Link href={`/(tab)/(home)/details/${item.id}`} style={styles.viewAllButton}>
-                        <Text style={styles.buttonText}>View All</Text>
-                    </Link>
-                    </View>
-                </View>
-            ))}
+                ))}
             </View></>
     );
 }
@@ -138,9 +163,9 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     addToCartButton: {
-        position: 'absolute', 
-        top: -10, 
-        right: -10, 
+        position: 'absolute',
+        top: -10,
+        right: -10,
         backgroundColor: '#fff',
         borderWidth: 1,
         borderColor: '#018786',

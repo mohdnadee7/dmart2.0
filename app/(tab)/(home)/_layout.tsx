@@ -1,4 +1,3 @@
-import { EvilIcons, FontAwesome,MaterialIcons } from "@expo/vector-icons";
 import { Stack } from "expo-router";
 const HomeLayout = ()=> {
   return (

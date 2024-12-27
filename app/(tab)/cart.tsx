@@ -1,27 +1,68 @@
 import TopHeader from '@/components/TopHeader';
-import { AntDesign, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import { Link } from 'expo-router';
-import React, { useState } from 'react';
-import { View, Text, Image, Button, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-
+import React, { useState, useCallback, useEffect } from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import { API_URL } from '../../env';
+import { GlobalAccess } from '@/components/location/GlobalAccess';
 
 const CartScreen = () => {
 
   const [quantity, setQuantity] = useState(1);
+  const [data, setData] = useState(null);
+  const [totalAmount, setTotalAmount] = useState(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      const fetchCartData = async () => {
+        try {
+          const response = await fetch(`${API_URL}getItemInCart?UserId=${GlobalAccess.UserId}`);
+          if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.statusText}`);
+          }
+          const result = await response.json();
+          setData(result);
+        } catch (err) {
+          console.log("error", err);          
+        } 
+      };
+
+      fetchCartData();
+    }, [])
+  );
+
+  useEffect(() => {
+    if (data) {
+      const total = data.reduce((sum, item) => sum + (item.Price || 0), 0);
+      setTotalAmount(total);
+    }
+  }, [data]);
 
   const incrementQuantity = () => {
-    setQuantity(quantity + 1);
+    //setQuantity(quantity + 1);
   };
 
   const decrementQuantity = () => {
     if (quantity > 1) {
-      setQuantity(quantity - 1);
+      //setQuantity(quantity - 1);
     }
   };
 
-  const deleteProduct = () => {
+  const deleteProduct = async (id: any) => {
     console.log('Product deleted');
     // Add your delete logic here
+    try {
+      const response = await fetch(API_URL + "removeItemInCart?id="+id)
+      if (!response.ok) {
+        throw new Error(`Network response was not ok: ${response.statusText}`);
+      }
+      const result = await response.json();
+      //setData(result);
+    } catch (err) {
+      console.log("error", err);
+    }
+
   };
 
   return (
@@ -37,112 +78,52 @@ const CartScreen = () => {
 
 
       <ScrollView style={styles.outerContainer}>
+        {data && data.length > 0 ? (
+          <>
+            {data && data.map((item, index) => (
+              <View style={styles.container} key={index}>
+                <Image
+                   source={{ uri: `${item.ImageUrl}` }}
+                  style={styles.image}
+                />
+                <View style={styles.detailsContainer}>
+                  <Text style={styles.name}>{item.Name}</Text>
+                  <Text style={styles.price}>₹{item.Price} - {item.Quantity}</Text>
+                  <View style={styles.quantityContainer}>
+                    <TouchableOpacity onPress={decrementQuantity} style={styles.btn}>
+                      <Text style={styles.btnText}>-</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.quantity}>{quantity}</Text>
+                    <TouchableOpacity onPress={incrementQuantity} style={styles.btn}>
+                      <Text style={styles.btnText}>+</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <TouchableOpacity onPress={() => deleteProduct(item._id)} style={styles.deleteBtn}>
+                  <Text style={styles.deleteBtnText}>
+                    <FontAwesome size={20} name="trash" color={"#fff"} />
+                  </Text>
+                </TouchableOpacity>
+              </View>
 
-        <View style={styles.container}>
-          <Image
-            source={require("@/assets/images/g1.png")}
-            style={styles.image}
-          />
-          <View style={styles.detailsContainer}>
-            <Text style={styles.name}>Mix Masala</Text>
-            <Text style={styles.price}>₹169.00</Text>
-            <View style={styles.quantityContainer}>
-              <TouchableOpacity onPress={decrementQuantity} style={styles.btn}>
-                <Text style={styles.btnText}>-</Text>
-              </TouchableOpacity>
-              <Text style={styles.quantity}>{quantity}</Text>
-              <TouchableOpacity onPress={incrementQuantity} style={styles.btn}>
-                <Text style={styles.btnText}>+</Text>
-              </TouchableOpacity>
+            ))}
+            <View style={styles.bottomSection}>
+              {/* Total Amount */}
+              <View style={styles.totalAmountContainer}>
+                <Text style={styles.totalText}>Total Amount:</Text>
+                <Text style={styles.amountText}>₹{totalAmount}</Text>
+              </View>
+
+              {/* Proceed Button */}
+              <Link style={styles.proceedButton} href={'/payment'} >
+                <Text style={styles.proceedButtonText}>Proceed to Order</Text>
+              </Link>
             </View>
-          </View>
-          <TouchableOpacity onPress={deleteProduct} style={styles.deleteBtn}>
-            <Text style={styles.deleteBtnText}>
-              <FontAwesome size={20} name="trash" color={"#fff"} />
-            </Text>
-          </TouchableOpacity>
-        </View>
+          </>
+        ) : (
+          <h3 style={{ textAlign: "center" }}>Your cart is empty</h3>
+        )}
 
-        <View style={styles.container}>
-          <Image
-            source={require("@/assets/images/g2.png")}
-            style={styles.image}
-          />
-          <View style={styles.detailsContainer}>
-            <Text style={styles.name}>Mix Masala</Text>
-            <Text style={styles.price}>₹140.00</Text>
-            <View style={styles.quantityContainer}>
-              <TouchableOpacity onPress={decrementQuantity} style={styles.btn}>
-                <Text style={styles.btnText}>-</Text>
-              </TouchableOpacity>
-              <Text style={styles.quantity}>{quantity}</Text>
-              <TouchableOpacity onPress={incrementQuantity} style={styles.btn}>
-                <Text style={styles.btnText}>+</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <TouchableOpacity onPress={deleteProduct} style={styles.deleteBtn}>
-            <Text style={styles.deleteBtnText}><FontAwesome size={20} name="trash" color={"#fff"} /></Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.container}>
-          <Image
-            source={require("@/assets/images/g3.png")}
-            style={styles.image}
-          />
-          <View style={styles.detailsContainer}>
-            <Text style={styles.name}>Mix Masala</Text>
-            <Text style={styles.price}>₹109.00</Text>
-            <View style={styles.quantityContainer}>
-              <TouchableOpacity onPress={decrementQuantity} style={styles.btn}>
-                <Text style={styles.btnText}>-</Text>
-              </TouchableOpacity>
-              <Text style={styles.quantity}>{quantity}</Text>
-              <TouchableOpacity onPress={incrementQuantity} style={styles.btn}>
-                <Text style={styles.btnText}>+</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <TouchableOpacity onPress={deleteProduct} style={styles.deleteBtn}>
-            <Text style={styles.deleteBtnText}><FontAwesome size={20} name="trash" color={"#fff"} /></Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.container}>
-          <Image
-            source={require("@/assets/images/g4.png")}
-            style={styles.image}
-          />
-          <View style={styles.detailsContainer}>
-            <Text style={styles.name}>Mix Masala</Text>
-            <Text style={styles.price}>₹109.00</Text>
-            <View style={styles.quantityContainer}>
-              <TouchableOpacity onPress={decrementQuantity} style={styles.btn}>
-                <Text style={styles.btnText}>-</Text>
-              </TouchableOpacity>
-              <Text style={styles.quantity}>{quantity}</Text>
-              <TouchableOpacity onPress={incrementQuantity} style={styles.btn}>
-                <Text style={styles.btnText}>+</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <TouchableOpacity onPress={deleteProduct} style={styles.deleteBtn}>
-            <Text style={styles.deleteBtnText}><FontAwesome size={20} name="trash" color={"#fff"} /></Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.bottomSection}>
-        {/* Total Amount */}
-        <View style={styles.totalAmountContainer}>
-          <Text style={styles.totalText}>Total Amount:</Text>
-          <Text style={styles.amountText}>₹459.00</Text>
-        </View>
-
-        {/* Proceed Button */}
-        <Link style={styles.proceedButton} href={'/payment'} >
-          <Text style={styles.proceedButtonText}>Proceed to Order</Text>
-        </Link>
-      </View>
       </ScrollView>
     </>
   );
@@ -221,8 +202,8 @@ const styles = StyleSheet.create({
   },
   btnText: {
     fontSize: 18,
-    color:"#fff",
-    fontWeight:'500',
+    color: "#fff",
+    fontWeight: '500',
   },
   deleteBtn: {
     padding: 5,
@@ -263,13 +244,13 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 5,
     alignItems: 'center',
-    textAlign:"center",
+    textAlign: "center",
   },
   proceedButtonText: {
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
-    
+
   },
 });
 export default CartScreen
