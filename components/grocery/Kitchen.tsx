@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
         padding: 10,
         margin: 10,
         backgroundColor: '#fff',
-        width: 160,
+        width: 175,
     },
     productTitle: {
         fontSize: 16,

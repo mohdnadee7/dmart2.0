@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, ActivityIndicator } from 'react-native';
 import * as Location from 'expo-location';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import { GlobalAccess } from './GlobalAccess';
-
+import { Link } from 'expo-router';
 
 export default function GeoLocation() {
     const [location, setLocation] = useState(null);
@@ -46,21 +46,22 @@ export default function GeoLocation() {
 
     return (
 
-        <View style={{ backgroundColor: "#018786", paddingBottom: 10 }}>
-            <View>
-                <View style={styles.location}>
-                    <FontAwesome5 name="shipping-fast" size={20} color="#fff" />
-                    <Text style={styles.deliveryBy}> Delivery by Today, 9 AM - 9 PM</Text>
-                </View>
-                {address ? (
-                    <Text style={styles.deviceAddress}>
-                        {address.city} {address.street}, {address.postalCode}
-                    </Text>
-
-                ) : (
-                    <Text>Fetching Address...</Text>
-                )}
+        <View style={{ backgroundColor: "#018786", paddingBottom: 5 }}>
+            <View style={styles.location}>
+                <FontAwesome5 name="shipping-fast" size={20} color="#fff" />
+                <Text style={styles.deliveryBy}> Delivery In 10 Mins</Text>
             </View>
+            {address ? (
+                <View style={styles.row}>
+                    <Text style={styles.deviceAddress}>{address.city} {address.street} ...</Text>
+                    <Link href={'/(tab)/(home)/address'} style={styles.downArrow}>
+                    <MaterialIcons name="keyboard-arrow-down" color={"#fff"} size={20}  />
+                    </Link>
+                    
+                </View>
+            ) : (
+                <Text>Fetching Address...</Text>
+            )}
         </View>
     );
 }
@@ -77,10 +78,18 @@ const styles = StyleSheet.create({
         color: "#fff"
     },
     deviceAddress: {
-        fontWeight: '400',
+        fontWeight: '500',
         fontSize: 11,
         marginLeft: 40,
         marginTop: -6,
         color: "#fff"
+    },
+    row: {
+        flexDirection: "row", 
+        alignItems: "center", 
+      },
+    downArrow: {
+      marginTop:-6,
+      fontWeight:"bold"
     }
 });

@@ -1,6 +1,6 @@
 import TopHeader from "@/components/TopHeader";
 import { Feather, FontAwesome, Fontisto, Ionicons } from "@expo/vector-icons";
-import React, { useState ,useCallback} from "react";
+import React, { useState, useCallback } from "react";
 import { useFocusEffect } from '@react-navigation/native';
 import {
   View,
@@ -12,6 +12,7 @@ import {
   Keyboard,
   Image
 } from "react-native";
+import { API_URL } from "@/env";
 
 const SearchPage = () => {
   const [query, setQuery] = useState("");
@@ -20,13 +21,10 @@ const SearchPage = () => {
   const [error, setError] = useState("");
 
   const fetchProducts = async () => {
-    //if (!query.trim()) return; // Do nothing if query is empty
     setLoading(true);
     setError("");
     try {
-      const response = await fetch( 
-        'https://d5ac-122-176-123-99.ngrok-free.app/api/Product/get-products'
-      );
+      const response = await fetch(API_URL + 'products');
       if (!response.ok) {
         throw new Error("Failed to fetch products");
       }
@@ -40,40 +38,39 @@ const SearchPage = () => {
   };
   useFocusEffect(
     useCallback(() => {
-        fetchProducts();
-    },[]))
+      fetchProducts();
+    }, []))
   const handleSearch = () => {
-  //  Keyboard.dismiss(); // Hide the keyboard
+    Keyboard.dismiss();
     fetchProducts();
   };
 
   const handleBack = () => {
-   // Keyboard.dismiss(); // Hide the keyboard
-    fetchProducts();
+
   };
   const renderProduct = ({ item }) => (
     <TouchableOpacity
       style={styles.productCard}
-      //onPress={() => navigation.navigate("ProductDetails", { product: item })}
+    //onPress={() => navigation.navigate("ProductDetails", { product: item })}
     >
       {/* Product Image */}
-      <Image source={{uri:`${item.imageUrl}`}} style={styles.productImage} />
+      <Image source={{ uri: `${item.ImageUrl}` }} style={styles.productImage} />
       {/* Product Details */}
       <View style={styles.productDetails}>
         <Text style={styles.productTitle} numberOfLines={2}>
-          {item.name}
+          {item.Name}
         </Text>
         <View style={styles.priceContainer}>
-            <Text style={styles.productPrice}>₹{item.price.toLocaleString()}</Text>
-            <Text style={styles.productMRP}>₹{item.mrp.toLocaleString()}</Text>
-            <Text style={styles.productDiscount}>30% off</Text>
-          </View>
+          <Text style={styles.productPrice}>₹{item.Price} {item.Quantity}</Text>
+          <Text style={styles.productMRP}>₹{item.MRP}</Text>
+          <Text style={styles.productDiscount}>30% off</Text>
+        </View>
         {/* Ratings */}
         <View style={styles.ratingContainer}>
           <FontAwesome name="star" size={16} color="#FFD700" />
           <FontAwesome name="star" size={16} color="#FFD700" />
           <FontAwesome name="star" size={16} color="#FFD700" />
-          <Text style={styles.ratingText}>{item.rating}</Text>
+          <Text style={styles.ratingText}>35.5k</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -81,45 +78,45 @@ const SearchPage = () => {
   return (
     <>
       <TopHeader />
-    <View style={styles.container}>
-    <View style={styles.headerContainer}>
-    <TouchableOpacity onPress={handleBack}>
-        <Ionicons name="arrow-back" size={24} color="white" />
-      </TouchableOpacity>
-      {/* Search Box */}
-      <View style={{width:"85%"}}>
-          <View style={styles.searchBox}>
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Search products..."
-              value={query}
-              onSubmitEditing={handleSearch}
-            />
-            <Fontisto name="search" size={20} color="#aaa" style={styles.icon} />
-          </View>
-          </View>
-      {/* Shop Icon */}
-      <TouchableOpacity>
-        <Feather name="shopping-cart" size={24} color="white" />
-      </TouchableOpacity>
-      </View>
-      {/* Error Message */}
-      {error ? <Text style={styles.errorText}>{error}</Text> : null}
-
-      {/* Loading Indicator */}
-      {loading ? <Text style={styles.loadingText}>Loading...</Text> : null}
-
-      {/* Products List */}
       <View style={styles.container}>
-      <FlatList
-        data={products}
-        renderItem={renderProduct}
-        keyExtractor={(item) => item.id}
-        numColumns={2} // Grid layout
-        contentContainerStyle={styles.listContainer}
-      />
-    </View>
-    </View>
+        <View style={styles.headerContainer}>
+          <TouchableOpacity onPress={handleBack}>
+            <Ionicons name="arrow-back" size={24} color="white" />
+          </TouchableOpacity>
+          {/* Search Box */}
+          <View style={{ width: "85%" }}>
+            <View style={styles.searchBox}>
+              <TextInput
+                style={styles.searchInput}
+                placeholder="Search products..."
+                value={query}
+                onSubmitEditing={handleSearch}
+              />
+              <Fontisto name="search" size={20} color="#aaa" style={styles.icon} />
+            </View>
+          </View>
+          {/* Shop Icon */}
+          <TouchableOpacity>
+            <Feather name="shopping-cart" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
+        {/* Error Message */}
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
+        {/* Loading Indicator */}
+        {loading ? <Text style={styles.loadingText}>Loading...</Text> : null}
+
+        {/* Products List */}
+        <View style={styles.container}>
+          <FlatList
+            data={products}
+            renderItem={renderProduct}
+            keyExtractor={(item) => item.id}
+            numColumns={2} // Grid layout
+            contentContainerStyle={styles.listContainer}
+          />
+        </View>
+      </View>
     </>
   );
 };

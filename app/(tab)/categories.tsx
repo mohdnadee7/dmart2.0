@@ -31,184 +31,90 @@ export default function Categories() {
             <Text style={styles.headerText}>Shop by Category </Text>
           </View>
           <View style={styles.container}>
-            <View style={styles.gridItemOuter}>
-              <View style={styles.gridItem}>
-                <Image
-                  source={require("@/assets/images/g1.png")}
-                  style={styles.gridItemImg}
-                />
+            <View style={{ backgroundColor: "#ddd", padding: 10,borderRadius:5, margin:5 }}>
+              <View style={{flexDirection :"row"}}>
+                <Image source={require("@/assets/images/g1.png")} style={styles.categoryItem}/>
+                <Image source={require("@/assets/images/g2.png")} style={styles.categoryItem}/>
               </View>
-              <Text style={styles.itemTitle}>Masala</Text>
+              <View style={{flexDirection :"row"}}>
+                <Image source={require("@/assets/images/g3.png")} style={styles.categoryItem}/>
+                <Image source={require("@/assets/images/g4.png")} style={styles.categoryItem}/>
+              </View>
             </View>
 
-            <View style={styles.gridItemOuter}>
-              <View style={styles.gridItem}>
-                <Image
-                  source={require("@/assets/images/g2.png")}
-                  style={styles.gridItemImg}
-                />
+            <View style={{ backgroundColor: "#ddd", padding: 10,borderRadius:5, margin:5 }}>
+              <View style={{flexDirection :"row"}}>
+                <Image source={require("@/assets/images/g5.png")} style={styles.categoryItem}/>
+                <Image source={require("@/assets/images/g6.png")} style={styles.categoryItem}/>
               </View>
-              <Text style={styles.itemTitle}>Khurmani</Text>
+              <View style={{flexDirection :"row"}}>
+                <Image source={require("@/assets/images/g3.png")} style={styles.categoryItem}/>
+                <Image source={require("@/assets/images/g4.png")} style={styles.categoryItem}/>
+              </View>
             </View>
 
-            <View style={styles.gridItemOuter}>
-              <View style={styles.gridItem}>
-                <Image
-                  source={require("@/assets/images/g3.png")}
-                  style={styles.gridItemImg}
-                />
+            <View style={{ backgroundColor: "#ddd", padding: 10,borderRadius:5,margin:5 }}>
+              <View style={{flexDirection :"row"}}>
+                <Image source={require("@/assets/images/g1.png")} style={styles.categoryItem}/>
+                <Image source={require("@/assets/images/g2.png")} style={styles.categoryItem}/>
               </View>
-              <Text style={styles.itemTitle}>Simla Mirch</Text>
+              <View style={{flexDirection :"row"}}>
+                <Image source={require("@/assets/images/g3.png")} style={styles.categoryItem}/>
+                <Image source={require("@/assets/images/g4.png")} style={styles.categoryItem}/>
+              </View>
+            </View>
+            <View style={{ backgroundColor: "#ddd", padding: 10,borderRadius:5,margin:5 }}>
+              <View style={{flexDirection :"row"}}>
+                <Image source={require("@/assets/images/g1.png")} style={styles.categoryItem}/>
+                <Image source={require("@/assets/images/g2.png")} style={styles.categoryItem}/>
+              </View>
+              <View style={{flexDirection :"row"}}>
+                <Image source={require("@/assets/images/g5.png")} style={styles.categoryItem}/>
+                <Image source={require("@/assets/images/g6.png")} style={styles.categoryItem}/>
+              </View>
             </View>
 
-            <View style={styles.gridItemOuter}>
-              <View style={styles.gridItem}>
-                <Image
-                  source={require("@/assets/images/g4.png")}
-                  style={styles.gridItemImg}
-                />
+          <View style={{ backgroundColor: "#ddd", padding: 10,borderRadius:5, margin:5 }}>
+              <View style={{flexDirection :"row"}}>
+                <Image source={require("@/assets/images/g3.png")} style={styles.categoryItem}/>
+                <Image source={require("@/assets/images/g1.png")} style={styles.categoryItem}/>
               </View>
-              <Text style={styles.itemTitle}>Onion</Text>
+              <View style={{flexDirection :"row"}}>
+                <Image source={require("@/assets/images/g5.png")} style={styles.categoryItem}/>
+                <Image source={require("@/assets/images/g2.png")} style={styles.categoryItem}/>
+              </View>
             </View>
 
-            <View style={styles.gridItemOuter}>
-              <View style={styles.gridItem}>
-                <Image
-                  source={require("@/assets/images/g5.png")}
-                  style={styles.gridItemImg}
-                />
+            <View style={{ backgroundColor: "#ddd", padding: 10,borderRadius:5, margin:5 }}>
+              <View style={{flexDirection :"row"}}>
+                <Image source={require("@/assets/images/g5.png")} style={styles.categoryItem}/>
+                <Image source={require("@/assets/images/g6.png")} style={styles.categoryItem}/>
               </View>
-              <Text style={styles.itemTitle}>Tamator</Text>
+              <View style={{flexDirection :"row"}}>
+                <Image source={require("@/assets/images/g3.png")} style={styles.categoryItem}/>
+                <Image source={require("@/assets/images/g4.png")} style={styles.categoryItem}/>
+              </View>
             </View>
 
-            <View style={styles.gridItemOuter}>
-              <View style={styles.gridItem}>
-                <Image
-                  source={require("@/assets/images/g6.png")}
-                  style={styles.gridItemImg}
-                />
+            <View style={{ backgroundColor: "#ddd", padding: 10,borderRadius:5,margin:5 }}>
+              <View style={{flexDirection :"row"}}>
+                <Image source={require("@/assets/images/g1.png")} style={styles.categoryItem}/>
+                <Image source={require("@/assets/images/g2.png")} style={styles.categoryItem}/>
               </View>
-              <Text style={styles.itemTitle}>Fruits</Text>
+              <View style={{flexDirection :"row"}}>
+                <Image source={require("@/assets/images/g3.png")} style={styles.categoryItem}/>
+                <Image source={require("@/assets/images/g4.png")} style={styles.categoryItem}/>
+              </View>
             </View>
-
-            <View style={styles.gridItemOuter}>
-              <View style={styles.gridItem}>
-                <Image
-                  source={require("@/assets/images/g1.png")}
-                  style={styles.gridItemImg}
-                />
+            <View style={{ backgroundColor: "#ddd", padding: 10,borderRadius:5,margin:5 }}>
+              <View style={{flexDirection :"row"}}>
+                <Image source={require("@/assets/images/g1.png")} style={styles.categoryItem}/>
+                <Image source={require("@/assets/images/g2.png")} style={styles.categoryItem}/>
               </View>
-              <Text style={styles.itemTitle}>Masala</Text>
-            </View>
-
-            <View style={styles.gridItemOuter}>
-              <View style={styles.gridItem}>
-                <Image
-                  source={require("@/assets/images/g2.png")}
-                  style={styles.gridItemImg}
-                />
+              <View style={{flexDirection :"row"}}>
+                <Image source={require("@/assets/images/g5.png")} style={styles.categoryItem}/>
+                <Image source={require("@/assets/images/g6.png")} style={styles.categoryItem}/>
               </View>
-              <Text style={styles.itemTitle}>Khurmani</Text>
-            </View>
-          </View>
-          <View
-            style={{
-              backgroundColor: "#018786",
-              padding: 8,
-              marginVertical: 5,
-              width: "100%",
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-
-            }}
-          >
-            <Text style={{ color: "#fff" }}>
-              Kitchen product
-            </Text>
-            <Link href="/details">
-              <MaterialIcons name="keyboard-arrow-right" color={"#fff"} size={20} />
-            </Link>
-          </View>
-          <View style={styles.container}>
-            <View style={styles.gridItemOuter}>
-              <View style={styles.gridItem}>
-                <Image
-                  source={require("@/assets/images/g1.png")}
-                  style={styles.gridItemImg}
-                />
-              </View>
-              <Text style={styles.itemTitle}>Masala</Text>
-            </View>
-
-            <View style={styles.gridItemOuter}>
-              <View style={styles.gridItem}>
-                <Image
-                  source={require("@/assets/images/g2.png")}
-                  style={styles.gridItemImg}
-                />
-              </View>
-              <Text style={styles.itemTitle}>Khurmani</Text>
-            </View>
-
-            <View style={styles.gridItemOuter}>
-              <View style={styles.gridItem}>
-                <Image
-                  source={require("@/assets/images/g3.png")}
-                  style={styles.gridItemImg}
-                />
-              </View>
-              <Text style={styles.itemTitle}>Simla Mirch</Text>
-            </View>
-
-            <View style={styles.gridItemOuter}>
-              <View style={styles.gridItem}>
-                <Image
-                  source={require("@/assets/images/g4.png")}
-                  style={styles.gridItemImg}
-                />
-              </View>
-              <Text style={styles.itemTitle}>Onion</Text>
-            </View>
-
-            <View style={styles.gridItemOuter}>
-              <View style={styles.gridItem}>
-                <Image
-                  source={require("@/assets/images/g5.png")}
-                  style={styles.gridItemImg}
-                />
-              </View>
-              <Text style={styles.itemTitle}>Tamator</Text>
-            </View>
-
-            <View style={styles.gridItemOuter}>
-              <View style={styles.gridItem}>
-                <Image
-                  source={require("@/assets/images/g6.png")}
-                  style={styles.gridItemImg}
-                />
-              </View>
-              <Text style={styles.itemTitle}>Fruits</Text>
-            </View>
-
-            <View style={styles.gridItemOuter}>
-              <View style={styles.gridItem}>
-                <Image
-                  source={require("@/assets/images/g1.png")}
-                  style={styles.gridItemImg}
-                />
-              </View>
-              <Text style={styles.itemTitle}>Masala</Text>
-            </View>
-
-            <View style={styles.gridItemOuter}>
-              <View style={styles.gridItem}>
-                <Image
-                  source={require("@/assets/images/g2.png")}
-                  style={styles.gridItemImg}
-                />
-              </View>
-              <Text style={styles.itemTitle}>Khurmani</Text>
             </View>
           </View>
           <View
@@ -517,4 +423,9 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 10,
   },
+  categoryItem:{
+    height:70,
+    width:70,
+    margin:5,
+  }
 });

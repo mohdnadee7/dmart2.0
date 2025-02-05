@@ -6,8 +6,7 @@ import {
   View,
   SafeAreaView,
   TextInput,
-  ImageBackground,
-  ActivityIndicator
+  ImageBackground
 } from "react-native";
 import { Fontisto, MaterialIcons } from "@expo/vector-icons";
 import TopHeader from "@/components/TopHeader";
@@ -23,8 +22,8 @@ import { API_URL } from '../../../env';
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
   const router = useRouter();
   const handleSearch = (text) => {
     router.navigate("/search");
@@ -44,26 +43,18 @@ const Index = () => {
             throw new Error(`Network response was not ok: ${response.statusText}`);
           }
           const result = await response.json();
-          setData(result); // Set the fetched data
+          setData(result);
         } catch (err) {
           console.log("error", err);
-          setError(err.message);
+          // setError(err.message);
         } finally {
-          setLoading(false);
+          //setLoading(false);
         }
       };
 
       fetchData();
     }, [])
   );
-
-  if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
-  }
-
-  if (error) {
-    return <Text>Error: {error}</Text>;
-  }
 
   return (
     <>
@@ -74,9 +65,9 @@ const Index = () => {
           <View style={styles.searchBox}>
             <TextInput
               style={styles.searchInput}
-              placeholder="Search..."
+              placeholder="Search for 'vegitable'"
               value={searchQuery}
-              onSubmitEditing={handleSearch}
+              onChangeText={handleSearch}
             />
             <Fontisto name="search" size={20} color="#aaa" style={styles.icon} />
           </View>
@@ -109,108 +100,122 @@ const Index = () => {
               />
             </View>
           </Swiper>
-          <View style={styles.itemHeader}>
-            <Text style={{ color: "#fff" }}>
-              View all product
-            </Text>
-            <Link href="/details">
-              <MaterialIcons name="keyboard-arrow-right" color={"#fff"} size={20} />
-            </Link>
-          </View>
-          <View style={styles.container}>
-            {data && data.map((item, index) => (
-              <View style={styles.gridItemOuter} key={index} onTouchEnd={() => ViewRelatedProduct(item.CategoryId)} >
-                <View style={styles.gridItem}>
-                  <Image
-                    source={{ uri: `${item.ImageUrl}` }}
-                    style={styles.gridItemImg}
-                  />
-                </View>
-                <Text style={styles.itemTitle}>{item.SubCategory}</Text>
+          {data ? (
+            <>
+              <View style={styles.itemHeader}>
+                <Text style={{ color: "#fff" }}>
+                  View all product
+                </Text>
+                <Link href="/details">
+                  <MaterialIcons name="keyboard-arrow-right" color={"#fff"} size={20} />
+                </Link>
               </View>
-            ))}
-          </View>
-
-          <View style={styles.itemHeader}>
-            <Text style={{ color: "#fff" }}>
-              View all product
-            </Text>
-            <Link href="/details">
-              <MaterialIcons name="keyboard-arrow-right" color={"#fff"} size={20} />
-            </Link>
-          </View>
-          <ImageBackground
-            source={require("@/assets/images/appg.png")}
-            style={styles.background}
-          >
-            <View style={styles.container}>
-              {data && data.map((item, index) => (
-                <View style={styles.gridItemOuter} key={index} onTouchEnd={() => ViewRelatedProduct(item.CategoryId)} >
-                  <View style={styles.gridItem}>
-                    <Image
-                      source={{ uri: `${item.ImageUrl}` }}
-                      style={styles.gridItemImg}
-                    />
+              <View style={styles.container}>
+                {data && data.map((item, index) => (
+                  <View style={styles.gridItemOuter} key={index} onTouchEnd={() => ViewRelatedProduct(item.CategoryId)} >
+                    <View style={styles.gridItem}>
+                      <Image
+                        source={{ uri: `${item.ImageUrl}` }}
+                        style={styles.gridItemImg}
+                      />
+                    </View>
+                    <Text style={styles.itemTitle}>{item.SubCategory}</Text>
                   </View>
-                  <Text style={styles.itemTitle}>{item.SubCategory}</Text>
+                ))}
+              </View>
+            </>
+          ) : (<Text></Text>)}
+<Kitchen />
+          {data ? (
+            <>
+              <View style={styles.itemHeader}>
+                <Text style={{ color: "#fff" }}>
+                  View all product
+                </Text>
+                <Link href="/details">
+                  <MaterialIcons name="keyboard-arrow-right" color={"#fff"} size={20} />
+                </Link>
+              </View>
+              <ImageBackground
+                source={require("@/assets/images/appg.png")}
+                style={styles.background}
+              >
+                <View style={styles.container}>
+                  {data && data.map((item, index) => (
+                    <View style={styles.gridItemOuter} key={index} onTouchEnd={() => ViewRelatedProduct(item.CategoryId)} >
+                      <View style={styles.gridItem}>
+                        <Image
+                          source={{ uri: `${item.ImageUrl}` }}
+                          style={styles.gridItemImg}
+                        />
+                      </View>
+                      <Text style={styles.itemTitle}>{item.SubCategory}</Text>
+                    </View>
+                  ))}
                 </View>
-              ))}
-            </View>
-          </ImageBackground>
-
+              </ImageBackground>
+            </>
+          ) : (<Text></Text>)}
           <DealsOfTheDay />
 
-          <View style={styles.itemHeader}>
-            <Text style={{ color: "#fff", fontWeight: 600 }}>
-              Grocery & kitchen
-            </Text>
-            <Link href="/details">
-              <MaterialIcons name="keyboard-arrow-right" color={"#fff"} size={20} />
-            </Link>
-          </View>
+          {data ? (
+            <>
+              <View style={styles.itemHeader}>
+                <Text style={{ color: "#fff", fontWeight: 600 }}>
+                  Grocery & kitchen
+                </Text>
+                <Link href="/details">
+                  <MaterialIcons name="keyboard-arrow-right" color={"#fff"} size={20} />
+                </Link>
+              </View>
 
-          <ImageBackground
-            source={require("@/assets/images/appg.png")}
-            style={styles.background}
-          >
-            <View style={styles.container}>
-              {data && data.map((item, index) => (
-                <View style={styles.gridItemOuter} key={index} onTouchEnd={() => ViewRelatedProduct(item.CategoryId)} >
-                  <View style={styles.gridItem}>
-                    <Image
-                      source={{ uri: `${item.ImageUrl}` }}
-                      style={styles.gridItemImg}
-                    />
-                  </View>
-                  <Text style={styles.itemTitle}>{item.SubCategory}</Text>
+              <ImageBackground
+                source={require("@/assets/images/appg.png")}
+                style={styles.background}
+              >
+                <View style={styles.container}>
+                  {data && data.map((item, index) => (
+                    <View style={styles.gridItemOuter} key={index} onTouchEnd={() => ViewRelatedProduct(item.CategoryId)} >
+                      <View style={styles.gridItem}>
+                        <Image
+                          source={{ uri: `${item.ImageUrl}` }}
+                          style={styles.gridItemImg}
+                        />
+                      </View>
+                      <Text style={styles.itemTitle}>{item.SubCategory}</Text>
+                    </View>
+                  ))}
                 </View>
-              ))}
-            </View>
-          </ImageBackground>
-
+              </ImageBackground>
+            </>
+          ) : (<Text></Text>)}
           <Kitchen />
 
-          <View style={styles.itemHeader}>
-            <Text style={{ color: "#fff" }}>
-              View all product
-            </Text>
-            <Link href="/details">
-              <MaterialIcons name="keyboard-arrow-right" color={"#fff"} size={20} />
-            </Link>
-          </View>
-          <View style={styles.container}>
-            {data && data.map((item, index) => (
-              <View style={styles.gridItemOuter} key={index} onTouchEnd={() => ViewRelatedProduct(item.CategoryId)} >
-                <View style={styles.gridItem}>
-                  <Image
-                    source={{ uri: `${item.ImageUrl}` }}
-                    style={styles.gridItemImg}
-                  />
-                </View>
-                <Text style={styles.itemTitle}>{item.SubCategory}</Text>
+          {data ? (
+            <>
+              <View style={styles.itemHeader}>
+                <Text style={{ color: "#fff" }}>
+                  View all product
+                </Text>
+                <Link href="/details">
+                  <MaterialIcons name="keyboard-arrow-right" color={"#fff"} size={20} />
+                </Link>
               </View>
-            ))}
-          </View>
+              <View style={styles.container}>
+                {data && data.map((item, index) => (
+                  <View style={styles.gridItemOuter} key={index} onTouchEnd={() => ViewRelatedProduct(item.CategoryId)} >
+                    <View style={styles.gridItem}>
+                      <Image
+                        source={{ uri: `${item.ImageUrl}` }}
+                        style={styles.gridItemImg}
+                      />
+                    </View>
+                    <Text style={styles.itemTitle}>{item.SubCategory}</Text>
+                  </View>
+                ))}
+              </View>
+            </>
+          ) : (<Text></Text>)}
         </ScrollView>
       </SafeAreaView>
     </>
@@ -274,7 +279,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#fff',
     paddingHorizontal: 10,
-    margin: 10,
+    marginHorizontal: 10,
+    marginBottom: 10,
   },
   background: {
     width: '100%',
@@ -293,7 +299,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
   },
-  itemHeader:{
+  itemHeader: {
     backgroundColor: "#018786",
     padding: 8,
     borderBottomColor: "#000",
